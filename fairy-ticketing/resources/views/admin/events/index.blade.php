@@ -40,15 +40,24 @@
                             <td class="py-4 px-4 text-gray-700 font-semibold text-sm">{{ $event->location }}</td>
                             <td class="py-4 px-4">
                                 @if($event->category)
-                                <span class="toca-badge-purple text-xs">{{ $event->category }}</span>
+                                    <span class="toca-badge-purple text-xs">{{ $event->category }}</span>
                                 @endif
                             </td>
                             <td class="py-4 px-4">
-                                <div class="flex gap-3">
+                                <div class="flex items-center gap-3">
+                                    <!-- View -->
                                     <a href="{{ route('event.show', $event->id) }}" 
                                         class="text-toca-blue hover:text-blue-700 font-bold text-sm">
                                         👁️ View
                                     </a>
+
+                                    <!-- Edit (ADMIN) -->
+                                    <a href="{{ route('admin.events.edit', $event->id) }}" 
+                                        class="text-yellow-600 hover:text-yellow-700 font-bold text-sm">
+                                        ✏️ Edit
+                                    </a>
+
+                                    <!-- Delete -->
                                     <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
                                         onsubmit="return confirm('Delete this event? 🗑️')">
                                         @csrf
