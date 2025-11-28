@@ -72,5 +72,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/events/{event}', [AdminEventController::class, 'destroy'])->name('events.destroy');
     Route::get('/events/{event}/add-ticket', [AdminEventController::class, 'addTicket'])->name('events.add-ticket');
     Route::post('/events/{event}/tickets', [AdminEventController::class, 'storeTicket'])->name('events.store-ticket');
+
+    #Ticket
+    Route::get('/admin/reports/sales', [\App\Http\Controllers\Admin\ReportController::class, 'sales'])->name('admin.reports.sales');
 });
 

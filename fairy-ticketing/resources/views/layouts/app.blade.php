@@ -89,6 +89,13 @@
                             <!-- Dropdown -->
                             <div class="absolute right-0 mt-2 w-48 bg-white rounded-3xl border-4 border-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                                 <div class="p-2">
+                                    @if(auth()->user()->isAdmin())
+                                        <a href="{{ route('admin.reports.sales') }}"
+                                        class="block px-4 py-3 font-bold text-gray-800 hover:bg-yellow-100 rounded-2xl transition">
+                                            📊 Ticket Reports
+                                        </a>
+                                    @endif
+
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="w-full text-left px-4 py-3 hover:bg-red-100 rounded-2xl font-bold text-gray-800 transition">
@@ -96,6 +103,7 @@
                                         </button>
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                     @endguest
