@@ -91,7 +91,7 @@
                                 
                                 <div class="relative overflow-hidden h-64">
                                     @if($event->image)
-                                        <img src="{{ asset('storage/'.$event->image) }}" 
+                                        <img src="{{ asset('events/'.$event->image) }}" 
                                             alt="{{ $event->name }}" 
                                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                     @else

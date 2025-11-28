@@ -106,7 +106,7 @@
                 @if($event->image)
                 <div>
                     <label class="block text-lg font-bold text-gray-800 mb-2">Current Image:</label>
-                    <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->name }}" 
+                    <img src="{{ asset('events/'.$event->image) }}" alt="{{ $event->name }}" 
                         class="w-full h-64 object-cover rounded-toca-xl border-4 border-gray-800">
                 </div>
                 @endif

@@ -59,7 +59,7 @@
                     <label class="block font-bold mb-2">Event Image (optional)</label>
                     @if($event->image)
                         <div class="mb-3">
-                            <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->name }}" class="w-40 h-24 object-cover rounded-xl border-2 border-gray-800">
+                            <img src="{{ asset('events/'.$event->image) }}" alt="{{ $event->name }}" class="w-40 h-24 object-cover rounded-xl border-2 border-gray-800">
                         </div>
                     @endif
                     <input type="file" name="image" accept="image/*" class="toca-input-elegant">

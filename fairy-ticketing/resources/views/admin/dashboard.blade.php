@@ -191,7 +191,7 @@
                         <div class="toca-card-elegant overflow-hidden bg-white relative subtle-hover">
                             <div class="relative h-48 overflow-hidden">
                                 @if($event->image)
-                                    <img src="{{ asset('storage/'.$event->image) }}" 
+                                    <img src="{{ asset('events/'.$event->image) }}" 
                                         alt="{{ $event->name }}" 
                                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                 @else

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Organizer;
 
 use App\Http\Controllers\Controller;
@@ -26,19 +27,24 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'required|string',
-            'event_date' => 'required|date|after:now',
-            'location' => 'required|string|max:255',
-            'category' => 'nullable|string|max:100',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'event_date'  => 'required|date|after:now',
+            'location'    => 'required|string|max:255',
+            'category'    => 'nullable|string|max:100',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $data = $request->all();
         $data['user_id'] = auth()->id();
 
+        // SIMPAN GAMBAR KE public/events DAN HANYA NAMA FILE
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('events', 'public');
+            $file     = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('events'), $filename);
+
+            $data['image'] = $filename; // tanpa "events/"
         }
 
         Event::create($data);
@@ -58,21 +64,27 @@ class EventController extends Controller
         $this->authorize('update', $event);
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'required|string',
-            'event_date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'category' => 'nullable|string|max:100',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'event_date'  => 'required|date',
+            'location'    => 'required|string|max:255',
+            'category'    => 'nullable|string|max:100',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $data = $request->all();
 
+        // UPDATE GAMBAR DI public/events
         if ($request->hasFile('image')) {
-            if ($event->image) {
-                Storage::disk('public')->delete($event->image);
+            if ($event->image && file_exists(public_path('events/'.$event->image))) {
+                @unlink(public_path('events/'.$event->image));
             }
-            $data['image'] = $request->file('image')->store('events', 'public');
+
+            $file     = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('events'), $filename);
+
+            $data['image'] = $filename; // penting: pakai $data, bukan $validated
         }
 
         $event->update($data);
@@ -85,8 +97,8 @@ class EventController extends Controller
     {
         $this->authorize('delete', $event);
 
-        if ($event->image) {
-            Storage::disk('public')->delete($event->image);
+        if ($event->image && file_exists(public_path('events/'.$event->image))) {
+            @unlink(public_path('events/'.$event->image));
         }
 
         $event->delete();
@@ -109,18 +121,19 @@ class EventController extends Controller
             ->findOrFail($eventId);
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'quota' => 'required|integer|min:1',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'price'       => 'required|numeric|min:0',
+            'quota'       => 'required|integer|min:1',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $data = $request->all();
-        $data['event_id'] = $eventId;
+        $data['event_id']  = $eventId;
         $data['available'] = $request->quota;
 
         if ($request->hasFile('image')) {
+            // untuk tiket masih boleh pakai storage publik
             $data['image'] = $request->file('image')->store('tickets', 'public');
         }
 

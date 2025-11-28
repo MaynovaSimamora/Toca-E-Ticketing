@@ -33,7 +33,7 @@
                     <div class="sticker-card toca-card-wave overflow-hidden bg-white transform hover:scale-[1.02] transition-transform duration-500">
                         <div class="relative h-[500px]">
                             @if($event->image)
-                                <img src="{{ asset('storage/'.$event->image) }}" 
+                                <img src="{{ asset('events/'.$event->image) }}" 
                                     alt="{{ $event->name }}" 
                                     class="w-full h-full object-cover">
                             @else

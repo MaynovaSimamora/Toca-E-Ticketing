@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request; 
+use App\Models\Ticket;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -33,8 +34,13 @@ class EventController extends Controller
 
         $validated['user_id'] = auth()->id(); // admin sebagai pembuat event
 
+        // SIMPAN GAMBAR KE public/events DAN HANYA NAMA FILE DI DB
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('events', 'public');
+            $file     = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('events'), $filename);
+
+            $validated['image'] = $filename; // tanpa "events/"
         }
 
         Event::create($validated);
@@ -60,11 +66,17 @@ class EventController extends Controller
             'image'       => 'nullable|image|max:2048',
         ]);
 
+        // UPDATE GAMBAR (hapus lama di public/events, simpan baru, simpan nama file)
         if ($request->hasFile('image')) {
-            if ($event->image) {
-                Storage::disk('public')->delete($event->image);
+            if ($event->image && file_exists(public_path('events/' . $event->image))) {
+                @unlink(public_path('events/' . $event->image));
             }
-            $validated['image'] = $request->file('image')->store('events', 'public');
+
+            $file     = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('events'), $filename);
+
+            $validated['image'] = $filename; // tanpa "events/"
         }
 
         $event->update($validated);
@@ -75,8 +87,9 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        if ($event->image) {
-            Storage::disk('public')->delete($event->image);
+        // HAPUS FILE DI public/events JUGA
+        if ($event->image && file_exists(public_path('events/' . $event->image))) {
+            @unlink(public_path('events/' . $event->image));
         }
 
         $event->delete();
@@ -88,8 +101,8 @@ class EventController extends Controller
     public function storeTicket(Request $request, Event $event)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'name'     => 'required|string|max:255',
+            'price'    => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:1',
         ]);
 
@@ -100,5 +113,3 @@ class EventController extends Controller
         return redirect()->route('admin.events.index')->with('success', 'Ticket added successfully! 🎫');
     }
 }
-
-

@@ -182,7 +182,7 @@
                             
                             <div class="relative h-48 overflow-hidden">
                                 @if($favorite->event->image)
-                                    <img src="{{ asset('storage/'.$favorite->event->image) }}" 
+                                    <img src="{{ asset('events/'.$favorite->event->image) }}" 
                                         alt="{{ $favorite->event->name }}" 
                                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                 @else

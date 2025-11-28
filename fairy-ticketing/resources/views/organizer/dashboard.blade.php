@@ -97,7 +97,7 @@
                                 <div class="lg:col-span-3">
                                     <div class="relative h-48 lg:h-full min-h-[200px] rounded-3xl overflow-hidden border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]">
                                         @if($event->image)
-                                            <img src="{{ asset('storage/'.$event->image) }}" 
+                                            <img src="{{ asset('events/'.$event->image) }}" 
                                                 alt="{{ $event->name }}" 
                                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                         @else
