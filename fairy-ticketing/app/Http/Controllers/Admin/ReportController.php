@@ -9,12 +9,10 @@ class ReportController extends Controller
 {
     public function sales()
     {
-        // daftar semua booking + relasi user dan event
-        $bookings = Booking::with(['user', 'ticket.event'])
+        $bookings = Booking::with(['user', 'ticket'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(10);
 
-        // ringkasan penjualan
         $totalTickets = Booking::sum('quantity');
         $totalRevenue = Booking::sum('total_price');
 

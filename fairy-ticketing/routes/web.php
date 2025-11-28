@@ -10,6 +10,8 @@ use App\Http\Controllers\Organizer\EventController as OrganizerEventController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\ReportController;
+
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -74,6 +76,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/events/{event}/tickets', [AdminEventController::class, 'storeTicket'])->name('events.store-ticket');
 
     #Ticket
-    Route::get('/admin/reports/sales', [\App\Http\Controllers\Admin\ReportController::class, 'sales'])->name('admin.reports.sales');
+    Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+
 });
 
