@@ -56,10 +56,21 @@ Route::middleware(['auth', 'role:organizer'])->prefix('organizer')->name('organi
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function() {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
+    // Manage Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users/{id}/approve', [UserController::class, 'approve'])->name('users.approve');
     Route::post('/users/{id}/reject', [UserController::class, 'reject'])->name('users.reject');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // Manage Events (Admin bisa tambah/edit/delete event)
     Route::get('/events', [AdminEventController::class, 'index'])->name('events.index');
+    Route::get('/events/create', [AdminEventController::class, 'create'])->name('events.create');
+    Route::post('/events', [AdminEventController::class, 'store'])->name('events.store');
+    Route::get('/events/{event}/edit', [AdminEventController::class, 'edit'])->name('events.edit');
+    Route::put('/events/{event}', [AdminEventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [AdminEventController::class, 'destroy'])->name('events.destroy');
+    Route::get('/events/{event}/add-ticket', [AdminEventController::class, 'addTicket'])->name('events.add-ticket');
+    Route::post('/events/{event}/tickets', [AdminEventController::class, 'storeTicket'])->name('events.store-ticket');
 });
+

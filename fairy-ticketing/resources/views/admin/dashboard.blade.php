@@ -11,6 +11,7 @@
 
     <div class="container mx-auto px-4 py-12">
         
+        <!-- Header -->
         <div class="text-center mb-16">
             <div class="flex justify-center items-center gap-4 mb-6">
                 <span class="text-7xl">👑</span>
@@ -24,6 +25,7 @@
             </div>
         </div>
 
+        <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <div class="toca-card-elegant p-6 bg-gradient-to-br from-blue-100 to-cyan-100 subtle-hover relative">
                 <div class="flex items-center justify-between">
@@ -78,6 +80,23 @@
             </div>
         </div>
 
+        <!-- Admin Create Event CTA -->
+        <div class="toca-card-elegant p-8 bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 mb-12 text-center subtle-hover relative">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <div class="text-7xl">➕</div>
+                    <div class="text-left">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-2">Create New Event</h3>
+                        <p class="text-lg text-gray-700 font-bold">Admin can create events directly!</p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.events.create') }}" class="toca-btn-pink text-xl px-10">
+                    Create Event 🚀
+                </a>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <a href="{{ route('admin.users.index') }}" class="toca-card-elegant p-8 bg-gradient-to-br from-white to-blue-50 subtle-hover relative group">
                 <div class="flex items-center gap-6">
@@ -103,6 +122,7 @@
         </div>
 
         @if($pendingOrganizers->count() > 0)
+        <!-- Pending approvals -->
         <div class="mb-12">
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-5xl">⏰</span>
@@ -158,6 +178,7 @@
         </div>
         @endif
 
+        <!-- Recent Events -->
         <div>
             <div class="flex items-center gap-4 mb-8">
                 <span class="text-5xl">🎪</span>
