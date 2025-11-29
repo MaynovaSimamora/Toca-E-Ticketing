@@ -7,6 +7,8 @@ use App\Models\Event;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 class EventController extends Controller
 {
@@ -99,7 +101,10 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        $this->authorize('delete', $event);
+        // Pastikan event ini milik organizer yang login
+        if ($event->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
         if ($event->image && file_exists(public_path('events/'.$event->image))) {
             @unlink(public_path('events/'.$event->image));
@@ -107,7 +112,8 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('organizer.events.index')
+        return redirect()
+            ->route('organizer.events.index')
             ->with('success', 'Event deleted successfully!');
     }
 
