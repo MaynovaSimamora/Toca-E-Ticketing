@@ -1,17 +1,20 @@
 <?php
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
-    protected $fillable = [
-        'user_id', 'ticket_id', 'quantity', 
-        'total_price', 'status', 'cancelled_at'
-    ];
+    use HasFactory;
 
-    protected $casts = [
-        'cancelled_at' => 'datetime',
+    protected $fillable = [
+        'user_id',
+        'ticket_id',
+        'quantity',
+        'total_price',
+        'status',
     ];
 
     public function user()
@@ -22,20 +25,5 @@ class Booking extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
-    }
-
-    public function isPending()
-    {
-        return $this->status === 'pending';
-    }
-
-    public function isApproved()
-    {
-        return $this->status === 'approved';
-    }
-
-    public function isCancelled()
-    {
-        return $this->status === 'cancelled';
     }
 }

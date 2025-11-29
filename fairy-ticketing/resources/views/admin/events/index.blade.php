@@ -44,22 +44,28 @@
                                 @endif
                             </td>
                             <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
+                                <div class="flex flex-wrap items-center gap-3">
                                     <!-- View -->
                                     <a href="{{ route('event.show', $event->id) }}" 
-                                        class="text-toca-blue hover:text-blue-700 font-bold text-sm">
+                                       class="text-toca-blue hover:text-blue-700 font-bold text-sm">
                                         👁️ View
                                     </a>
 
                                     <!-- Edit (ADMIN) -->
                                     <a href="{{ route('admin.events.edit', $event->id) }}" 
-                                        class="text-yellow-600 hover:text-yellow-700 font-bold text-sm">
+                                       class="text-yellow-600 hover:text-yellow-700 font-bold text-sm">
                                         ✏️ Edit
+                                    </a>
+
+                                    <!-- Manage Tickets (ADMIN) -->
+                                    <a href="{{ route('admin.events.add-ticket', $event->id) }}"
+                                       class="toca-btn-green text-center py-1 px-3 text-xs font-bold">
+                                        🎫 Manage Tickets
                                     </a>
 
                                     <!-- Delete -->
                                     <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
-                                        onsubmit="return confirm('Delete this event? 🗑️')">
+                                          onsubmit="return confirm('Delete this event? 🗑️')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-700 font-bold text-sm">

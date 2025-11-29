@@ -186,11 +186,41 @@
                                     <td class="px-4 py-3 text-right whitespace-nowrap">
                                         Rp {{ number_format($booking->total_price, 0, ',', '.') }}
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <span class="toca-badge-purple text-[11px] md:text-xs px-3 py-1">
-                                            {{ ucfirst($booking->status) }}
-                                        </span>
+
+                                    {{-- STATUS + ACTION BUTTONS --}}
+                                   <td class="px-4 py-3 text-center">
+                                        @if($booking->status === 'pending')
+                                            <span class="toca-badge-purple text-[11px] md:text-xs px-3 py-1 mr-2">
+                                                {{ ucfirst($booking->status) }}
+                                            </span>
+
+                                            {{-- Approve --}}
+                                            <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit" class="toca-badge-cute bg-green-500 text-white text-[11px] md:text-xs px-3 py-1">
+                                                    Approve
+                                                </button>
+                                            </form>
+
+                                            {{-- Cancel --}}
+                                            <form action="{{ route('admin.bookings.cancel', $booking->id) }}" method="POST" class="inline ml-1">
+                                                @csrf
+                                                <button type="submit" class="toca-badge-cute bg-red-500 text-white text-[11px] md:text-xs px-3 py-1">
+                                                    Cancel
+                                                </button>
+                                            </form>
+                                        @elseif($booking->status === 'approved')
+                                            <span class="toca-badge-cute bg-green-500 text-white text-[11px] md:text-xs px-3 py-1">
+                                                Approved
+                                            </span>
+                                        @else
+                                            <span class="toca-badge-cute bg-red-500 text-white text-[11px] md:text-xs px-3 py-1">
+                                                Cancelled
+                                            </span>
+                                        @endif
                                     </td>
+
+
                                 </tr>
                             @empty
                                 <tr>
@@ -204,6 +234,8 @@
                 </div>
             </div>
         </div>
+
+
 
         {{-- 4. QUICK LINKS (MANAGE USERS / EVENTS) --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">

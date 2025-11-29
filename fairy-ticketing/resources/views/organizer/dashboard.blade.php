@@ -79,6 +79,10 @@
                 <a href="{{ route('organizer.events.create') }}" class="toca-btn-pink text-xl px-10">
                     Create New Event 🚀
                 </a>
+
+                <a href="{{ route('organizer.bookings.index') }}" class="toca-btn-purple text-xl px-10">
+                Manage Bookings 🎫
+                </a>
             </div>
         </div>
 

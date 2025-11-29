@@ -55,6 +55,13 @@ class EventController extends Controller
         return view('admin.events.edit', compact('event', 'categories'));
     }
 
+    public function addTicket(Event $event)
+    {
+        $tickets = $event->tickets()->orderBy('price')->get();
+
+        return view('admin.events.add-ticket', compact('event', 'tickets'));
+    }
+
     public function update(Request $request, Event $event)
     {
         $validated = $request->validate([
@@ -101,15 +108,20 @@ class EventController extends Controller
     public function storeTicket(Request $request, Event $event)
     {
         $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'price'    => 'required|numeric|min:0',
-            'quantity' => 'required|integer|min:1',
+            'name'        => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price'       => 'required|integer|min:0',
+            'quota'       => 'required|integer|min:1',
         ]);
 
-        $validated['event_id'] = $event->id;
+        // saat create tiket baru, quantity awal = quota
+        $validated['event_id']  = $event->id;
+        $validated['quantity']  = $validated['quota'];
 
         Ticket::create($validated);
 
-        return redirect()->route('admin.events.index')->with('success', 'Ticket added successfully! 🎫');
+        return redirect()
+            ->route('admin.events.add-ticket', $event->id)
+            ->with('success', 'Ticket created successfully!');
     }
 }

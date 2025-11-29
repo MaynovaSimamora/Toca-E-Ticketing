@@ -11,6 +11,10 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Organizer\BookingController as OrganizerBookingController;
+
+
 
 
 // Public Routes
@@ -53,7 +57,13 @@ Route::middleware(['auth', 'role:organizer'])->prefix('organizer')->name('organi
     Route::resource('events', OrganizerEventController::class);
     Route::get('/event/{event}/add-ticket', [OrganizerEventController::class, 'addTicket'])->name('event.add-ticket');
     Route::post('/event/{event}/store-ticket', [OrganizerEventController::class, 'storeTicket'])->name('event.store-ticket');
+
+    // Booking management oleh organizer
+    Route::get('/bookings', [OrganizerBookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings/{booking}/approve', [OrganizerBookingController::class, 'approve'])->name('bookings.approve');
+    Route::post('/bookings/{booking}/cancel', [OrganizerBookingController::class, 'cancel'])->name('bookings.cancel');
 });
+
 
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function() {
@@ -77,6 +87,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     #Ticket
     Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+    Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings/{booking}/approve', [AdminBookingController::class, 'approve'])->name('bookings.approve');
+    Route::post('/bookings/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('bookings.cancel');
 
 });
 
