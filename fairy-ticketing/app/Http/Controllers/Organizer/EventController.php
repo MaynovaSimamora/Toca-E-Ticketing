@@ -55,13 +55,17 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        $this->authorize('update', $event);
+        if ($event->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
         return view('organizer.events.edit', compact('event'));
     }
 
     public function update(Request $request, Event $event)
     {
-        $this->authorize('update', $event);
+        if ($event->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
 
         $request->validate([
             'name'        => 'required|string|max:255',
@@ -130,7 +134,7 @@ class EventController extends Controller
 
         $data = $request->all();
         $data['event_id']  = $eventId;
-        $data['available'] = $request->quota;
+        $data['quantity'] = $request->quota;
 
         if ($request->hasFile('image')) {
             // untuk tiket masih boleh pakai storage publik

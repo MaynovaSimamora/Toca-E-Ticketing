@@ -195,10 +195,10 @@
                                         
                                         <!-- Availability -->
                                         <div class="mb-4">
-                                            @if($ticket->available > 0)
+                                            @if($ticket->quantity > 0)
                                                 <div class="toca-badge-cute bg-green-500 text-white">
                                                     <span>✅</span>
-                                                    <span>{{ $ticket->available }} left!</span>
+                                                    <span>{{ $ticket->quantity }} left!</span>
                                                 </div>
                                             @else
                                                 <div class="toca-badge-cute bg-red-500 text-white">
@@ -211,8 +211,8 @@
                                         <!-- Book Button -->
                                         @auth
                                             @if(auth()->user()->isUser())
-                                                @if($ticket->available > 0)
-                                                <button onclick="openBookingModal({{ $ticket->id }}, '{{ $ticket->name }}', {{ $ticket->price }}, {{ $ticket->available }})" 
+                                                @if($ticket->quantity > 0)
+                                                <button onclick="openBookingModal({{ $ticket->id }}, '{{ $ticket->name }}', {{ $ticket->price }}, {{ $ticket->quantity }})" 
                                                     class="w-full toca-btn-pink">
                                                     Book Now! 🎉
                                                 </button>

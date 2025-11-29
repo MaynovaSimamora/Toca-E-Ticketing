@@ -18,7 +18,7 @@ class BookingController extends Controller
 
         $ticket = Ticket::findOrFail($request->ticket_id);
 
-        if ($ticket->available < $request->quantity) {
+        if ($ticket->quantity < $request->quantity) {
             return back()->with('error', 'Not enough tickets available!');
         }
 
@@ -33,7 +33,7 @@ class BookingController extends Controller
             ]);
 
             // Reduce ticket quota
-            $ticket->decrement('available', $request->quantity);
+            $ticket->decrement('quantity', $request->quantity);
         });
 
         return redirect()->route('user.dashboard')
