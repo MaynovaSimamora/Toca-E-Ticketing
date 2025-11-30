@@ -80,7 +80,6 @@ class EventController extends Controller
 
         $data = $request->all();
 
-        // UPDATE GAMBAR DI public/events
         if ($request->hasFile('image')) {
             if ($event->image && file_exists(public_path('events/'.$event->image))) {
                 @unlink(public_path('events/'.$event->image));
@@ -90,7 +89,7 @@ class EventController extends Controller
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('events'), $filename);
 
-            $data['image'] = $filename; // penting: pakai $data, bukan $validated
+            $data['image'] = $filename; 
         }
 
         $event->update($data);
